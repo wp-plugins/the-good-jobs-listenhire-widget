@@ -20,4 +20,7 @@ delete_option( 'lh_margin_bottom' );
 delete_option( 'lh_url' );
 delete_option( 'lh_id' );
 delete_option( 'lh_gray' );
+delete_option( 'lh_theme' );
+delete_option( 'lh_animation' );
+delete_option( 'lh_align' );
  

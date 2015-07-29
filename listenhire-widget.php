@@ -55,6 +55,9 @@ class Listenhire_Widget extends WP_Widget {
 			'url' => get_option('lh_url'),
 			'id' => get_option('lh_id'),
 			'gray' => get_option('lh_gray'),
+			'align' => get_option('lh_align'),
+			'theme' => get_option('lh_theme'),
+			'animation' => get_option('lh_animation'),
    		 );
 		
 		$widget = $this->get_widget($a);
@@ -115,29 +118,34 @@ class Listenhire_Widget extends WP_Widget {
 			'url' => get_option('lh_url'),
 			'id' => get_option('lh_id'),
 			'gray' => get_option('lh_gray'),
+			'align' => get_option('lh_align'),
+			'theme' => get_option('lh_theme'),
+			'animation' => get_option('lh_animation'),
    		 ), $atts );
 		
 			
 		if($a['width'] != 'auto'){
-			$width = $a['width'] . 'px';	
+			$width = 'width:'.$a['width'] . 'px;';	
+		}else{
+			$width = '';	
 		}
 	 
 	 if($a['margin_top']){
-		$margin_top = $a['margin_top'] . 'px';	 
+		$margin_top = 'margin-top:' . $a['margin_top'] . 'px;';	 
 	 }else{
-		$margin_top = 'auto'; 
+		$margin_top = ''; 
 	 }
 	 
 	 if($a['margin_bottom']){
-		$margin_bottom = $a['margin_bottom'] . 'px';	 
+		$margin_bottom = 'margin-bottom:'.$a['margin_bottom'] . 'px;';	 
 	 }else{
-		$margin_bottom = 'auto'; 
+		$margin_bottom = ''; 
 	 }
 	 
 	 if($a['title']){
-		$title = '<div style="margin-top:' . $margin_top . ';margin-bottom:10px;text-align:'. $a['text_align'] .';font-weight:' . $a['font_weight'] . '">' . $a['title'] . '</div>';
+		$title = '<div style="'.$margin_top . 'margin-bottom:10px;text-align:'. $a['text_align'] .';font-weight:' . $a['font_weight'] . '">' . $a['title'] . '</div>';
 		
-		$margin_top = 'auto';
+		$margin_top = '';
 		 
 	 }else{
 		$title = NULL; 
@@ -150,8 +158,21 @@ class Listenhire_Widget extends WP_Widget {
 	 }
 	 
 	 $gray = $a['gray'] == 'true' ? 'true' : 'false';
- 
-	 $listenHire = $title . '<div id="'.$id.'" style="' . $a['width'] . ';margin-top:'.$margin_top.';margin-bottom:'.$margin_bottom.';"></div><script src="https://thegoodjobs.com/widget/badges_js/' . $a['hash'] . '?overlay=' . $a['overlay'] . '&vert=' . $a['vert'] . '&stack=' . $a['stack'] . '&size=' . $a['size'] . '&resp=' . $a['resp'] . '&width=' . $a['width'] . '&url='.$a['url'] . '&id='.$a['id'].'&gray='.$gray.'" type="text/javascript"></script>';
+ 	
+	 //prepare parameters
+	 
+	 $url_vert = $a['vert'] == 'true' ? '&vert=' . $a['vert'] : '';
+	 $url_size = $a['size'] != 'small' || !$a['size'] ? '&size='.$a['size'] : '';
+	 $url_resp = $a['resp'] == 'true' ? '&resp='.$a['resp'] : '';
+	 $url_width = $a['width'] != 'auto' && $a['width'] != '' ? '&width='.$a['width'] : '';
+	 $url_url = $a['url'] != '' ? '&url='.$a['url'] : '';
+	 $url_id = $a['id'] != '' ? '&id='.$a['id'] : '';
+	 $url_gray = $a['gray'] == 'true' ? '&gray='.$a['gray'] : '';
+	 $url_align = $a['align'] != 'left' ? '&align='.$a['align'] : '';
+	 $url_theme = $a['theme'] != 'default' && $a['theme'] != '' ? '&theme='.$a['theme'] : '';
+	 $url_animation = $a['animation'] == 'true' ? '&fade='.$a['animation'] : '';
+	
+	 $listenHire = $title . '<div id="'.$id.'" style="' . $width .$margin_top.$margin_bottom.'"></div><script src="http://local.thegoodjobs.staging/widget/badges_js/' . $a['hash'] . '?overlay=' . $a['overlay'] . $url_vert . '&stack=' . $a['stack'] . $url_size . $url_resp . $url_width . $url_url . $url_id.$url_gray.$url_align.$url_theme.$url_animation.'" type="text/javascript"></script>';
 	 
 	 return $listenHire;
  
@@ -203,6 +224,9 @@ function register_lh_settings() {
 	register_setting( 'lh-settings-group', 'lh_url' );
 	register_setting( 'lh-settings-group', 'lh_id' );
 	register_setting( 'lh-settings-group', 'lh_gray' );
+	register_setting( 'lh-settings-group', 'lh_align' );
+	register_setting( 'lh-settings-group', 'lh_theme' );
+	register_setting( 'lh-settings-group', 'lh_animation' );
 }
 
 function lh_settings_page() {
@@ -230,6 +254,9 @@ function lh_settings_page() {
         <li><code>url="url"</code> <i>(url)</i> Add a custom url to The Good Jobs logo. </li>
         <li><code>id="unique_id"</code> <i>(string)</i> Add a unique ID to the div container if you would like to display more than one ListenHire Widget per page.</li>
         <li><code>gray="true_false"</code> <i>(bool)</i> Set to "True" if you would like the unearned Culture Badges you applied for to be displayed.</li>
+        <li><code>align="left_right_center"</code> <i>(string)</i> Choose the alignment of the widget.</li>
+        <li><code>theme="default_dark"</code> <i>(string)</i> Choose the widget theme that will best match your website.</li>
+        <li><code>fade="true_false"</code> <i>(bool)</i> Set to "True" if you would like an animation to be applied to the modal window.</li>
     </ul>
 </p>
 
@@ -350,6 +377,37 @@ function lh_settings_page() {
         	<select name="lh_gray">
             	<option <? echo esc_attr( get_option('lh_gray') ) == 'false' ? 'selected' : '';  ?> value="false">False</option>
                 <option <? echo esc_attr( get_option('lh_gray') ) == 'true' ? 'selected' : '';  ?> value="true">True</option>
+            </select>
+        </td>
+        </tr>
+        
+        <tr valign="top">
+        <th scope="row">Alignment</th>
+        <td>
+        	<select name="lh_align">
+            	<option <? echo esc_attr( get_option('lh_align') ) == 'left' ? 'selected' : '';  ?> value="left">Left</option>
+                <option <? echo esc_attr( get_option('lh_align') ) == 'right' ? 'selected' : '';  ?> value="right">Right</option>
+                <option <? echo esc_attr( get_option('lh_align') ) == 'center' ? 'selected' : '';  ?> value="center">Center</option>
+            </select>
+        </td>
+        </tr>
+        
+        <tr valign="top">
+        <th scope="row">Theme</th>
+        <td>
+        	<select name="lh_theme">
+            	<option <? echo esc_attr( get_option('lh_theme') ) == 'default' ? 'selected' : '';  ?> value="default">Default</option>
+                <option <? echo esc_attr( get_option('lh_theme') ) == 'dark' ? 'selected' : '';  ?> value="dark">Dark</option>
+            </select>
+        </td>
+        </tr>
+        
+        <tr valign="top">
+        <th scope="row">Animation</th>
+        <td>
+        	<select name="lh_animation">
+            	<option <? echo esc_attr( get_option('lh_animation') ) == 'true' ? 'selected' : '';  ?> value="true">True</option>
+                <option <? echo esc_attr( get_option('lh_animation') ) == 'false' ? 'selected' : '';  ?> value="false">False</option>
             </select>
         </td>
         </tr>

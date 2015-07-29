@@ -62,8 +62,11 @@ You can use this plugin two ways.
 
 == Changelog ==
 
-= 1.0 =
+= 1.1 =
+
+1. Added 3 new options (animation, theme, and align).
+2. Changed how popups are identified using multiple widgets.
 
 == Upgrade Notice ==
 
-= 1.0 =
+= 1.1 =
