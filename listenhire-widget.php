@@ -172,7 +172,7 @@ class Listenhire_Widget extends WP_Widget {
 	 $url_theme = $a['theme'] != 'default' && $a['theme'] != '' ? '&theme='.$a['theme'] : '';
 	 $url_animation = $a['animation'] == 'true' ? '&fade='.$a['animation'] : '';
 	
-	 $listenHire = $title . '<div id="'.$id.'" style="' . $width .$margin_top.$margin_bottom.'"></div><script src="http://local.thegoodjobs.staging/widget/badges_js/' . $a['hash'] . '?overlay=' . $a['overlay'] . $url_vert . '&stack=' . $a['stack'] . $url_size . $url_resp . $url_width . $url_url . $url_id.$url_gray.$url_align.$url_theme.$url_animation.'" type="text/javascript"></script>';
+	 $listenHire = $title . '<div id="'.$id.'" style="' . $width .$margin_top.$margin_bottom.'"></div><script src="https://thegoodjobs.com/widget/badges_js/' . $a['hash'] . '?overlay=' . $a['overlay'] . $url_vert . '&stack=' . $a['stack'] . $url_size . $url_resp . $url_width . $url_url . $url_id.$url_gray.$url_align.$url_theme.$url_animation.'" type="text/javascript"></script>';
 	 
 	 return $listenHire;
  
