@@ -4,7 +4,7 @@ Donate link: https://thegoodjobs.com/
 Tags: thegoodjobs, culture, talent, tgj
 Requires at least: 3.0.1
 Tested up to: 4.2.2
-Stable tag: 1.1
+Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -62,11 +62,12 @@ You can use this plugin two ways.
 
 == Changelog ==
 
-= 1.1 =
+= 1.0 =
 
 1. Added 3 new options (animation, theme, and align).
 2. Changed how popups are identified using multiple widgets.
 
 == Upgrade Notice ==
 
-= 1.1 =
+= 1.0 =
+
